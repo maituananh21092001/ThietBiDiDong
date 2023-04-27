@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SqLite</string>
+    <string-array name="skill">
+        <item>Web</item>
+        <item>iOS</item>
+        <item>Android</item>
+
+    </string-array>
+</resources>

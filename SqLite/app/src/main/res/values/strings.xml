@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SqLite</string>
+    <string name="app_name">Quản lý chi tieu</string>
     <string-array name="category">
         <item>Mua sam</item>
         <item>Tien an</item>
@@ -8,4 +8,19 @@
         <item>Tien nuoc</item>
         <item>Tien di lai</item>
     </string-array>
+    <string-array name="month">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
 </resources>

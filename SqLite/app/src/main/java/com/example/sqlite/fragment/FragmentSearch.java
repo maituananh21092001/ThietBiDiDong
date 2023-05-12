@@ -1,6 +1,8 @@
 package com.example.sqlite.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.example.sqlite.R;
 import com.example.sqlite.adapter.RecycleViewAdapter;
 import com.example.sqlite.dal.SqLiteHelper;
 import com.example.sqlite.model.Item;
+import com.example.sqlite.model.User;
 
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +41,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
     private Spinner spCategory;
     private RecycleViewAdapter adapter;
     private SqLiteHelper db;
-
+    User user;
 
 
     @Nullable
@@ -53,7 +56,10 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
         initView(view);
         adapter = new RecycleViewAdapter();
         db = new SqLiteHelper(getContext());
-        List<Item> list = db.getAll();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+        user = db.getUser(username);
+        List<Item> list = db.getAll(user.getId());
         adapter.setList(list);
         tvTong.setText("Tong tien"+ tong(list)+"K");
         LinearLayoutManager manager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
@@ -67,7 +73,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                List<Item> list= db.searchByTitle(s);
+                List<Item> list= db.searchByTitle(s,user.getId());
                 tvTong.setText("Tong tien"+ tong(list)+"K");
                 adapter.setList(list);
                 return false;
@@ -82,9 +88,9 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
                 String cate = spCategory.getItemAtPosition(position).toString();
                 List<Item> list;
                 if(!cate.equalsIgnoreCase("all")){
-                    list = db.searchByCategory(cate);
+                    list = db.searchByCategory(cate,user.getId());
                 }else{
-                    list = db.getAll();
+                    list = db.getAll(user.getId());
                 }
                 adapter.setList(list);
                 tvTong.setText("Tong tien"+ tong(list)+"K");
@@ -159,6 +165,9 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
                     }else{
                         date = d+"/0"+(m+1)+"/"+y;
                     }
+                    if(d+1<=9){
+                        date = "0"+date;
+                    }
                     eTo.setText(date);
                 }
             },year,month,day);
@@ -168,7 +177,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
             String from = eFrom.getText().toString();
             String to = eTo.getText().toString();
             if(!from.isEmpty()&&!to.isEmpty()){
-                List<Item> list = db.searchByDateFromTo(from, to);
+                List<Item> list = db.searchByDateFromTo(from, to,user.getId());
                 adapter.setList(list);
                 tvTong.setText("Tong tien"+ tong(list)+"K");
             }

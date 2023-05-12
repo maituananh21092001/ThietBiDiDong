@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +18,7 @@ import android.widget.Spinner;
 
 import com.example.sqlite.dal.SqLiteHelper;
 import com.example.sqlite.model.Item;
+import com.example.sqlite.model.User;
 
 import java.util.Calendar;
 
@@ -23,11 +26,19 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
     public Spinner sp;
     private EditText eTitle,ePrice, eDate;
     private Button btUpdate,btBack,btRemove;
+    SqLiteHelper db;
     private Item item;
+
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_delete);
+        db = new SqLiteHelper(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+        user = db.getUser(username);
         initView();
         btBack.setOnClickListener(this);
         btUpdate.setOnClickListener(this);
@@ -63,7 +74,7 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        SqLiteHelper db = new SqLiteHelper(this);
+         db = new SqLiteHelper(this);
         if(view==eDate){
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -94,7 +105,7 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
             String d = eDate.getText().toString();
             if(!t.isEmpty()&&p.matches("\\d+")){
                 int id = item.getId();
-                Item i = new Item(id,t,p,d,c);
+                Item i = new Item(id,t,p,d,c,user);
                  db = new SqLiteHelper(this);
                 db.updateItem(i);
                 finish();

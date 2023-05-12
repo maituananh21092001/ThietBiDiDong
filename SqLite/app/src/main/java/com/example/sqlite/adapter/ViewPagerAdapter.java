@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.sqlite.fragment.FragmentHistory;
 import com.example.sqlite.fragment.FragmentHome;
+import com.example.sqlite.fragment.FragmentNoti;
+import com.example.sqlite.fragment.FragmentProfile;
 import com.example.sqlite.fragment.FragmentSearch;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -18,9 +20,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0 : return new FragmentHome();
-            case 1 :return new FragmentHistory();
-            case 2 :return new FragmentSearch();
+            case 1 : return new FragmentNoti();
+            case 0: return new FragmentHome();
+            case 2 :return new FragmentHistory();
+            case 3 :return new FragmentSearch();
+            case 4: return new FragmentProfile();
 
 
         }
@@ -29,6 +33,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 5;
     }
 }

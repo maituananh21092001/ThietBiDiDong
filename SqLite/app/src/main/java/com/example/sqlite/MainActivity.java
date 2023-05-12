@@ -52,14 +52,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 switch (position){
+                    case 1:
+                        navigationView.getMenu().findItem(R.id.mNoti).setChecked(true);
+                        break;
                     case 0:
                         navigationView.getMenu().findItem(R.id.mHome).setChecked(true);
                         break;
-                    case 1:
+                    case 2:
                         navigationView.getMenu().findItem(R.id.mHistory).setChecked(true);
                         break;
-                    case 2:
+                    case 3:
                         navigationView.getMenu().findItem(R.id.mSearch).setChecked(true);
+                        break;
+                    case 4:
+                        navigationView.getMenu().findItem(R.id.mProfile).setChecked(true);
                         break;
 
                 }
@@ -74,14 +80,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
+                    case R.id.mNoti:
+                        viewPager.setCurrentItem(1);
+                        break;
                     case R.id.mHome:
                         viewPager.setCurrentItem(0);
                         break;
                     case R.id.mHistory:
-                        viewPager.setCurrentItem(1);
+                        viewPager.setCurrentItem(2);
                         break;
                     case R.id.mSearch:
-                        viewPager.setCurrentItem(2);
+                        viewPager.setCurrentItem(3);
+                        break;
+                    case R.id.mProfile:
+                        viewPager.setCurrentItem(4);
                         break;
 
                 }

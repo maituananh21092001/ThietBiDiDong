@@ -2,20 +2,24 @@ package com.example.sqlite.dal;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.sqlite.model.Income;
 import com.example.sqlite.model.Item;
+import com.example.sqlite.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SqLiteHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME ="ChiTieu.db";
+    private static final String DATABASE_NAME ="AppChiTieu4.db";
     private static int DATABASE_VERSION = 1;
+
 
     public SqLiteHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,19 +27,38 @@ public class SqLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE items("+
-                "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "title TEXT,"+
-                "category TEXT,"+
-                "price TEXT,"+
-                "date TEXT)";
+        String sql = "CREATE TABLE items (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title TEXT," +
+                "category TEXT," +
+                "price TEXT," +
+                "date TEXT," +
+                "user_id INTEGER," +  // Thêm trường user_id với kiểu dữ liệu INTEGER
+                "FOREIGN KEY(user_id) REFERENCES User(id)" +  // Thêm khóa ngoại user_id tham chiếu đến trường id của bảng users
+                ")";
+
         db.execSQL(sql);
+        String createTableUser = "CREATE TABLE User (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email text, yourName text )";
+        db.execSQL(createTableUser);
+
+        String createTableIncome = "CREATE TABLE income (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "salary INTEGER NOT NULL," +
+                "month INTEGER NOT NULL," +
+                "user_id INTEGER," +
+                "type_income TEXT NOT NULL," +
+                "FOREIGN KEY (user_id) REFERENCES User(id)" +
+                ");";
+        db.execSQL(createTableIncome);
 
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS User");
+        db.execSQL("DROP TABLE IF EXISTS items");
+        db.execSQL("DROP TABLE IF EXISTS income");
+        onCreate(db);
     }
 
     @Override
@@ -44,12 +67,14 @@ public class SqLiteHelper extends SQLiteOpenHelper {
     }
 
     //get all order by date dêcnding
-    public List<Item> getAll() {
+    public List<Item> getAll(int userId) {
         List<Item> list = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         String order = "date DESC";
+        String whereClause = "user_id=?";
+        String[] whereArgs = {String.valueOf(userId)};
         Cursor rs = sqLiteDatabase.query("items",
-                null, null, null,
+                null, whereClause, whereArgs,
                 null, null, order);
         while ((rs != null) && (rs.moveToNext())) {
             int id= rs.getInt(0);
@@ -57,11 +82,11 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             String category = rs.getString(2);
             String price = rs.getString(3);
             String date = rs.getString(4);
-            list.add(new Item(id,title,price,date,category));
+            int user_id = rs.getInt(5);
+            list.add(new Item(id,title,price,date,category,this.getUserById(user_id)));
         }
         return list;
     }
-
     //add
     public long addItem(Item i){
         ContentValues values = new ContentValues();
@@ -69,15 +94,16 @@ public class SqLiteHelper extends SQLiteOpenHelper {
         values.put("category", i.getCategory());
         values.put("price", i.getPrice());
         values.put("date", i.getDate());
+        values.put("user_id",i.getUser().getId());
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         return sqLiteDatabase.insert("items",null, values);
     }
 
     //lay item theo date
-    public List<Item> getByDate(String date) {
+    public List<Item> getByDate(String date, int user_id1) {
         List<Item> list = new ArrayList<>();
-        String whereClause = "date like ?";
-        String[] whereArgs = {date};
+        String whereClause = "date like ? AND user_id = ?";
+        String[] whereArgs = {date,Integer.toString(user_id1)};
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor rs = sqLiteDatabase.query("items",
                 null, whereClause, whereArgs,
@@ -87,14 +113,16 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             String title = rs.getString(1);
             String category = rs.getString(2);
             String price = rs.getString(3);
-            list.add(new Item(id,title,price,date,category));
+            String date1 = rs.getString(4);
+            int user_id = rs.getInt(5);
+            list.add(new Item(id,title,price,date1,category,this.getUserById(user_id)));
         }
         return list;
     }
 
 
     public void deleteAllItem(int id){
-        String sql = "DELETE  FROM items ";
+        String sql = "DELETE  FROM items  ";
         SQLiteDatabase st = getWritableDatabase();
         st.execSQL(sql);
     }
@@ -105,8 +133,9 @@ public class SqLiteHelper extends SQLiteOpenHelper {
         values.put("category", i.getCategory());
         values.put("price", i.getPrice());
         values.put("date", i.getDate());
+        values.put("user_id",i.getUser().getId());
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String whereClause = "id = ?";
+        String whereClause = "id = ? ";
         String[] whereArgs = {Integer.toString(i.getId())};
         return sqLiteDatabase.update("items",
                 values, whereClause, whereArgs);
@@ -120,10 +149,10 @@ public class SqLiteHelper extends SQLiteOpenHelper {
                 whereClause, whereArgs);
     }
 
-    public List<Item> searchByTitle(String key) {
+    public List<Item> searchByTitle(String key, int user_id) {
         List<Item> list = new ArrayList<>();
-        String whereClause = "title like ?";
-        String[] whereArgs = {"%"+key +"%"};
+        String whereClause = "title like ? AND user_id = ?";
+        String[] whereArgs = {"%"+key +"%", Integer.toString(user_id)};
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor rs = sqLiteDatabase.query("items",
                 null, whereClause, whereArgs,
@@ -134,15 +163,15 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             String category = rs.getString(2);
             String price = rs.getString(3);
             String date = rs.getString(4);
-            list.add(new Item(id,title,price,date,category));
+            list.add(new Item(id,title,price,date,category,this.getUserById(user_id)));
         }
         return list;
     }
 
-    public List<Item> searchByCategory(String category) {
+    public List<Item> searchByCategory(String category,int user_id) {
         List<Item> list = new ArrayList<>();
-        String whereClause = "category like ?";
-        String[] whereArgs = {category};
+        String whereClause = "category like ? AND user_id = ?";
+        String[] whereArgs = {category,Integer.toString(user_id)};
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor rs = sqLiteDatabase.query("items",
                 null, whereClause, whereArgs,
@@ -153,15 +182,15 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             String c = rs.getString(2);
             String price = rs.getString(3);
             String date = rs.getString(4);
-            list.add(new Item(id,title,price,date,c));
+            list.add(new Item(id,title,price,date,category,this.getUserById(user_id)));
         }
         return list;
     }
 
-    public List<Item> searchByDateFromTo(String from, String to) {
+    public List<Item> searchByDateFromTo(String from, String to, int user_id) {
         List<Item> list = new ArrayList<>();
-        String whereClause = "date BETWEEN ? AND ?";
-        String[] whereArgs = {from.trim(),to.trim()};
+        String whereClause = "date BETWEEN ? AND ? AND user_id = ?";
+        String[] whereArgs = {from.trim(),to.trim(),Integer.toString(user_id)};
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor rs = sqLiteDatabase.query("items",
                 null, whereClause, whereArgs,
@@ -172,11 +201,141 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             String category = rs.getString(2);
             String price = rs.getString(3);
             String date = rs.getString(4);
-            list.add(new Item(id,title,price,date,category));
+            list.add(new Item(id,title,price,date,category,this.getUserById(user_id)));
+
+        }
+        return list;
+    }
+
+
+    // ____ User _____
+    public boolean addUser(User user) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("username", user.getUsername());
+        values.put("password", user.getPassword());
+        values.put("email", user.getEmail());
+        values.put("yourName", user.getYourName());
+
+        long result = db.insert("User", null, values);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public boolean checkUser(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] columns = {"id"};
+        String selection = "username=? and password=?";
+        String[] selectionArgs = {username, password};
+        Cursor cursor = db.query("User", columns, selection, selectionArgs, null, null, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public User getUser(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        User user = null;
+
+        String[] projection = {
+                "id",
+                "username",
+                "password",
+                "email",
+                "yourName"
+        };
+
+        String selection = "username = ?";
+        String[] selectionArgs = { username };
+
+        Cursor cursor = db.query(
+                "User",
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+            String yourName = cursor.getString(cursor.getColumnIndexOrThrow("yourName"));
+            user = new User(id, username, password, email, yourName);
+        }
+
+        cursor.close();
+        db.close();
+        return user;
+    }
+
+    public User getUserById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"id", "username", "password", "email", "yourName"};
+        String selection = "id=?";
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor cursor = db.query("User", columns, selection, selectionArgs, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            User user = new User(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4)
+            );
+            cursor.close();
+            return user;
+        }
+        return null;
+    }
+
+
+// ------ Incomes ------//
+
+    public void addIncome(Income i) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("salary", i.getSalary());
+        values.put("month", i.getMonth());
+        values.put("user_id", i.getUser().getId());
+        values.put("type_income", i.getTypeIncome());
+        db.insert("income", null, values);
+        db.close();
+    }
+
+    public List<Income> getAllIncome(int userId) {
+        List<Income> list = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String whereClause = "user_id=?";
+        String[] whereArgs = {String.valueOf(userId)};
+        Cursor rs = sqLiteDatabase.query("income",
+                null, whereClause, whereArgs,
+                null, null, null);
+        while ((rs != null) && (rs.moveToNext())) {
+            int id= rs.getInt(0);
+            int salary = rs.getInt(1);
+            int month = rs.getInt(2);
+            int user_id = rs.getInt(3);
+            String type_income = rs.getString(4);
+            list.add(new Income(id,salary,month,this.getUserById(user_id),type_income));
         }
         return list;
     }
 
 
 
+
+
 }
+
+

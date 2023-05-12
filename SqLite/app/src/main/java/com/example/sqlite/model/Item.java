@@ -9,22 +9,34 @@ public class Item implements Serializable {
     private String date;
     private String category;
 
+    private User user;
+
     public Item() {
     }
 
-    public Item(int id, String title, String price, String date, String category) {
+    public Item(int id, String title, String price, String date, String category, User user) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.date = date;
         this.category = category;
+        this.user = user;
     }
 
-    public Item(String title, String price, String date, String category) {
+    public Item(String title, String price, String date, String category, User user) {
         this.title = title;
         this.price = price;
         this.date = date;
         this.category = category;
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {

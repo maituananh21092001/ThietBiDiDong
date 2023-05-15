@@ -11,6 +11,10 @@ import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
     Button loginButton;
+   // Intent m = new Intent(Intent.ACTION_VIEW);
+    //                  m.setData(Uri.parse("sms:"+"0817420095"));
+//                  m.putExtra("sms_body","");
+//                  startActivity(m);
     Button registerButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

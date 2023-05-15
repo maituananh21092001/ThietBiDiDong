@@ -52,12 +52,19 @@
         android:layout_marginTop="16dp"
         android:inputType="textPassword"
         android:hint="Password"/>
+    <EditText
+        android:id="@+id/register_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/register_password"
+        android:layout_marginTop="16dp"
+        android:hint="Phone number"/>
 
     <Button
         android:id="@+id/register_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/register_password"
+        android:layout_below="@id/register_phone"
         android:layout_marginTop="32dp"
         android:text="Đăng Kí"/>
 

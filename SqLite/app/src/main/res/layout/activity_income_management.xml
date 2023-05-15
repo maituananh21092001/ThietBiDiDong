@@ -63,13 +63,13 @@
             android:text="Update"
             android:textSize="14dp" />
 
-<!--        <Button-->
-<!--            android:id="@+id/btAll"-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="20dp"-->
-<!--            android:text="Get All"-->
-<!--            android:textSize="14dp" />-->
+        <Button
+            android:id="@+id/btDelete"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Delete"
+            android:textSize="14dp" />
     </LinearLayout>
 
 

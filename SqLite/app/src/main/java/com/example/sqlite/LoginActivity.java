@@ -4,23 +4,41 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
 
+//import javax.mail.MessagingException;
+//import javax.mail.Session;
+//import javax.mail.Message;
+//import javax.mail.Transport;
+//import javax.mail.internet.InternetAddress;
+//import javax.mail.internet.MimeMessage;
+//import javax.mail.PasswordAuthentication;
+//import java.util.Properties;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.sqlite.dal.SqLiteHelper;
+
+import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword, etEmail;
     private Button btnLogin;
-    private TextView tvRegister;
+    private TextView tvRegister,tvForgot;
 
     private SqLiteHelper sqlHelper;
+    private static final int PERMISSION_SEND_SMS = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +79,39 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        tvForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, PhoneVerifyInput.class);
+                startActivity(intent);
+
+//                    if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.SEND_SMS)
+//                            == PackageManager.PERMISSION_GRANTED) {
+//
+//                        sendSMS("+84817420095", generateVerificationCode());
+//                    } else {
+//                        ActivityCompat.requestPermissions(LoginActivity.this,
+//                                new String[]{Manifest.permission.SEND_SMS}, PERMISSION_SEND_SMS);
+//                    }
+
+            }
+        });
 
     }
+
+
+    // sends the verification code to the user's email address
+
 
     private void initView() {
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
         tvRegister = findViewById(R.id.tv_register);
+        tvForgot = findViewById(R.id.tv_forgot);
         sqlHelper = new SqLiteHelper(this);
     }
+
+
 
 }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqLiteHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME ="AppChiTieu4.db";
+    private static final String DATABASE_NAME ="AppChiTieu5.db";
     private static int DATABASE_VERSION = 1;
 
 
@@ -38,7 +38,7 @@ public class SqLiteHelper extends SQLiteOpenHelper {
                 ")";
 
         db.execSQL(sql);
-        String createTableUser = "CREATE TABLE User (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email text, yourName text )";
+        String createTableUser = "CREATE TABLE User (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email text, yourName text,phoneNumber text )";
         db.execSQL(createTableUser);
 
         String createTableIncome = "CREATE TABLE income (" +
@@ -216,6 +216,7 @@ public class SqLiteHelper extends SQLiteOpenHelper {
         values.put("password", user.getPassword());
         values.put("email", user.getEmail());
         values.put("yourName", user.getYourName());
+        values.put("phoneNumber", user.getPhoneNumber());
 
         long result = db.insert("User", null, values);
         if (result == -1) {
@@ -249,7 +250,8 @@ public class SqLiteHelper extends SQLiteOpenHelper {
                 "username",
                 "password",
                 "email",
-                "yourName"
+                "yourName",
+                "phoneNumber"
         };
 
         String selection = "username = ?";
@@ -270,7 +272,8 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
             String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
             String yourName = cursor.getString(cursor.getColumnIndexOrThrow("yourName"));
-            user = new User(id, username, password, email, yourName);
+            String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow("phoneNumber"));
+            user = new User(id, username, password, email, yourName,phoneNumber);
         }
 
         cursor.close();
@@ -280,7 +283,7 @@ public class SqLiteHelper extends SQLiteOpenHelper {
 
     public User getUserById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {"id", "username", "password", "email", "yourName"};
+        String[] columns = {"id", "username", "password", "email", "yourName","phoneNumber"};
         String selection = "id=?";
         String[] selectionArgs = {String.valueOf(id)};
         Cursor cursor = db.query("User", columns, selection, selectionArgs, null, null, null);
@@ -291,13 +294,73 @@ public class SqLiteHelper extends SQLiteOpenHelper {
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getString(4)
+                    cursor.getString(4),
+                    cursor.getString(5)
             );
             cursor.close();
             return user;
         }
         return null;
     }
+    public User getUserByPhone(String phone) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"id", "username", "password", "email", "yourName","phoneNumber"};
+        String selection = "phoneNumber = ?";
+        String[] selectionArgs = {phone};
+        Cursor cursor = db.query("User", columns, selection, selectionArgs, null, null, null);
+        if (cursor != null&& cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            User user = new User(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5)
+            );
+            cursor.close();
+            return user;
+        }
+        return null;
+    }
+
+
+
+
+    public int updateUser(User user){
+        ContentValues values = new ContentValues();
+        values.put("email",user.getEmail());
+        values.put("yourName",user.getYourName());
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String whereClause = "id = ? ";
+        String[] whereArgs = {Integer.toString(user.getId())};
+        return sqLiteDatabase.update("User",
+                values, whereClause, whereArgs);
+    }
+
+    public int updatePassword(User user, String newPass){
+        ContentValues values = new ContentValues();
+
+        values.put("password",newPass);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String whereClause = "id = ? ";
+        String[] whereArgs = {Integer.toString(user.getId())};
+        return sqLiteDatabase.update("User",
+                values, whereClause, whereArgs);
+    }
+
+    public int updateForgotPassword(String phone,String newPass){
+        ContentValues values = new ContentValues();
+
+        values.put("password",newPass);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String whereClause = "phoneNumber = ? ";
+        String[] whereArgs = {phone};
+        return sqLiteDatabase.update("User",
+                values, whereClause, whereArgs);
+    }
+
+
 
 
 // ------ Incomes ------//
@@ -330,6 +393,27 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             list.add(new Income(id,salary,month,this.getUserById(user_id),type_income));
         }
         return list;
+    }
+
+    public int updateIncome(Income i) {
+        ContentValues values = new ContentValues();
+        values.put("salary", i.getSalary());
+        values.put("month", i.getMonth());
+        values.put("user_id", i.getUser().getId());
+        values.put("type_income", i.getTypeIncome());
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String whereClause = "id = ? ";
+        String[] whereArgs = {Integer.toString(i.getId())};
+        return sqLiteDatabase.update("income",
+                values, whereClause, whereArgs);
+    }
+
+    public int deleteIncome(int id) {
+        String whereClause = "id = ?";
+        String[] whereArgs = {Integer.toString(id)};
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        return sqLiteDatabase.delete("income",
+                whereClause, whereArgs);
     }
 
 

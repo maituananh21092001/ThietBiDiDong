@@ -61,9 +61,9 @@ public class IncomeManagement extends AppCompatActivity implements IncomeAdapter
 
                 double price = 0;
                 try {
-                    int month = Integer.valueOf(spMonth.getSelectedItem().toString());
-                    String typeIncome = etType.getText().toString();
-                    int salary = Integer.valueOf(etSalary.getText().toString());
+                    int month = Integer.valueOf(spMonth.getSelectedItem().toString().trim());
+                    String typeIncome = etType.getText().toString().trim();
+                    int salary = Integer.valueOf(etSalary.getText().toString().trim());
 
                     income.setMonth(month);
                     income.setTypeIncome(typeIncome);
@@ -87,9 +87,9 @@ public class IncomeManagement extends AppCompatActivity implements IncomeAdapter
 
                 double price = 0;
                 try {
-                    int month = Integer.valueOf(spMonth.getSelectedItem().toString());
-                    String typeIncome = etType.getText().toString();
-                    int salary = Integer.valueOf(etSalary.getText().toString());
+                    int month = Integer.valueOf(spMonth.getSelectedItem().toString().trim());
+                    String typeIncome = etType.getText().toString().trim();
+                    int salary = Integer.valueOf(etSalary.getText().toString().trim());
                     income.setId(incomeUpdate.getId());
                     income.setMonth(month);
                     income.setTypeIncome(typeIncome);
@@ -102,6 +102,8 @@ public class IncomeManagement extends AppCompatActivity implements IncomeAdapter
                     btDelete.setEnabled(false);
                     incomeList = db.getAllIncome(user.getId());
                     incomeAdapter.setList(incomeList);
+                    etType.setText("");
+                    etSalary.setText("");
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Nhap lai", Toast.LENGTH_SHORT).show();
 
@@ -136,6 +138,8 @@ public class IncomeManagement extends AppCompatActivity implements IncomeAdapter
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                etType.setText("");
+                etSalary.setText("");
             }
         });
     }

@@ -25,7 +25,7 @@ import com.example.sqlite.model.User;
 
 public class FragmentProfile extends Fragment {
     private SqLiteHelper db;
-    private EditText eEmail,eYourName;
+    private EditText eEmail,eYourName,eYourPhone;
     private Button logoutButton,editButton,saveButton,btChangePassword;
     @Nullable
     @Override
@@ -39,6 +39,7 @@ public class FragmentProfile extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         eEmail = view.findViewById(R.id.eEmail);
         eYourName = view.findViewById(R.id.eYour_name);
+        eYourPhone = view.findViewById(R.id.eYour_phone);
         logoutButton = view.findViewById(R.id.logout_button);
         editButton = view.findViewById(R.id.edit_profile);
         saveButton = view.findViewById(R.id.save_profile);
@@ -51,7 +52,7 @@ public class FragmentProfile extends Fragment {
         User user = db.getUser(username);
         eEmail.setText(user.getEmail() == null ? "" : user.getEmail());
         eYourName.setText(user.getYourName() == null? "": user.getYourName());
-
+        eYourPhone.setText(user.getYourName() == null? "": user.getPhoneNumber());
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +149,8 @@ public class FragmentProfile extends Fragment {
         eEmail.requestFocus();
         eYourName.setEnabled(true);
         eYourName.requestFocus();
+        eYourPhone.setEnabled(true);
+        eYourPhone.requestFocus();
     }
 
     void disableEdit(){
@@ -155,6 +158,8 @@ public class FragmentProfile extends Fragment {
         eEmail.requestFocus();
         eYourName.setEnabled(false);
         eYourName.requestFocus();
+        eYourPhone.setEnabled(false);
+        eYourPhone.requestFocus();
     }
     @Override
     public void onResume() {

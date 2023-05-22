@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sqlite.IncomeManagement;
 import com.example.sqlite.R;
+import com.example.sqlite.StatisticIncomeActivity;
 import com.example.sqlite.adapter.IncomeAdapter;
 
 public class FragmentHome extends Fragment {
@@ -40,5 +41,14 @@ public class FragmentHome extends Fragment {
                 startActivity(intent);
             }
         });
+
+        incomeStatistic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), StatisticIncomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

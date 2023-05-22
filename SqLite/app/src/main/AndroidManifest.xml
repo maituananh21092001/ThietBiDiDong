@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SqLite"
         tools:targetApi="31">
+        <activity
+            android:name=".StatisticIncomeActivity"
+            android:exported="false" />
+
+        <receiver android:name=".notification.NotificationReceiver" />
+
         <activity
             android:name=".VerifyPhoneNumber"
             android:exported="false" />

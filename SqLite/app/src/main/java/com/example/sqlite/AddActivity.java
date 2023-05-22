@@ -69,6 +69,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     }else{
                         date = d+"/0"+(m+1)+"/"+y;
                     }
+                    if(d<=9) date = "0"+ date;
                     eDate.setText(date);
                 }
             },year,month,day);

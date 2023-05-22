@@ -331,6 +331,7 @@ public class SqLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("email",user.getEmail());
         values.put("yourName",user.getYourName());
+        values.put("phoneNumber",user.getPhoneNumber());
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String whereClause = "id = ? ";
         String[] whereArgs = {Integer.toString(user.getId())};
@@ -393,6 +394,24 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             list.add(new Income(id,salary,month,this.getUserById(user_id),type_income));
         }
         return list;
+    }
+
+    public int getSumIncomeByMonth(int userId, int month) {
+        int sumIncome = 0;
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String[] columns = {"salary"};
+        String selection = "user_id=? AND month=?";
+        String[] selectionArgs = {String.valueOf(userId), String.valueOf(month)};
+        Cursor cursor = sqLiteDatabase.query("income", columns, selection, selectionArgs,
+                null, null, null);
+        while (cursor != null && cursor.moveToNext()) {
+            int salary = cursor.getInt(cursor.getColumnIndexOrThrow("salary"));
+            sumIncome += salary;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return sumIncome;
     }
 
     public int updateIncome(Income i) {

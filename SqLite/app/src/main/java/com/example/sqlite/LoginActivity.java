@@ -29,14 +29,22 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.sqlite.dal.SqLiteHelper;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword, etEmail;
-    private Button btnLogin;
+    private Button btnLogin,btnLoginGg;
     private TextView tvRegister,tvForgot;
 
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
     private SqLiteHelper sqlHelper;
     private static final int PERMISSION_SEND_SMS = 123;
 
@@ -45,7 +53,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         initView();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
 
+        btnLoginGg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +116,31 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void signIn() {
+        Intent signInIntent = gsc.getSignInIntent();
+        startActivityForResult(signInIntent,1000);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                task.getResult(ApiException.class);
+                // Đăng nhập thành công, chuyển đến trang chính
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+
+
+            } catch (ApiException e) {
+                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
 
     // sends the verification code to the user's email address
 
@@ -107,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
+        btnLoginGg = findViewById(R.id.btn_login_gg);
         tvRegister = findViewById(R.id.tv_register);
         tvForgot = findViewById(R.id.tv_forgot);
         sqlHelper = new SqLiteHelper(this);

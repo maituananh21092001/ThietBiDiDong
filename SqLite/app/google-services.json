@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "188093926066",
+    "project_id": "sqlite-4c09d",
+    "storage_bucket": "sqlite-4c09d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188093926066:android:c613ff20745ec3c16b17ab",
+        "android_client_info": {
+          "package_name": "com.example.sqlite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188093926066-bkq9to4stmkoovhiu6g3kdon3k23tsq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdUm27W1DRpqf1sEJ0fAgi1tukcg8ojnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188093926066-bkq9to4stmkoovhiu6g3kdon3k23tsq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

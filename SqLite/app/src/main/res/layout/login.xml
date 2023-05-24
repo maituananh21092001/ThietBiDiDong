@@ -24,6 +24,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login" />
+    <Button
+        android:id="@+id/btn_login_gg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login with gg" />
 
     <TextView
         android:id="@+id/tv_register"

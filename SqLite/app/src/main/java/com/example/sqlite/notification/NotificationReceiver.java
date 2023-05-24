@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -19,6 +23,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        createNotificationChannel(context);
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             int itemCount = bundle.getInt("itemCount", 0);
@@ -83,5 +88,27 @@ public class NotificationReceiver extends BroadcastReceiver {
     private int generateUniqueNotificationId() {
         // Tạo một NOTIFICATION_ID duy nhất bằng cách sử dụng thời gian hiện tại
         return (int) System.currentTimeMillis();
+    }
+
+    private void createNotificationChannel(Context context) {
+        // Check if the device is running Android 8.0 Oreo or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Define the channel ID and name
+            String channelId = "your_channel_id";
+            CharSequence channelName = "Your Channel Name";
+            // Define the importance level of the notification
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            // Create the notification channel
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+
+            // Optional: Customize additional channel settings
+            channel.setDescription("Your Channel Description");
+            // ...
+
+            // Register the channel with the system
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

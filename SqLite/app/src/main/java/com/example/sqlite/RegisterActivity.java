@@ -29,6 +29,7 @@ public class RegisterActivity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String phoneNumberRegex = "^0[0-9]{9}$";
                 String name = mNameEditText.getText().toString().trim();
                 String email = mEmailEditText.getText().toString().trim();
                 String hovaten = mHovatenEditText.getText().toString().trim();
@@ -37,6 +38,14 @@ public class RegisterActivity extends Activity {
                 // Kiểm tra xem các trường thông tin có bị bỏ trống hay không
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(hovaten) || TextUtils.isEmpty(password)) {
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!phone.matches(phoneNumberRegex)){
+                    Toast.makeText(RegisterActivity.this, "So dien thoai phai dung dinh dang", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!sqlHelper.isEmmailNumberUnique(email)||!sqlHelper.isPhoneNumberUnique(phone)){
+                    Toast.makeText(RegisterActivity.this, "So dien thoai  va email da ton tai", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

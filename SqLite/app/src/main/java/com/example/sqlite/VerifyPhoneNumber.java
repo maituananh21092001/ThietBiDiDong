@@ -30,7 +30,7 @@ public class VerifyPhoneNumber extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_phone_number);
         db = new SqLiteHelper(this);
-        toSendSms();
+        toSendSms(getIntent().getStringExtra("phone"));
         initView();
         btSave.setOnClickListener(new View.OnClickListener() {
 
@@ -63,11 +63,11 @@ public class VerifyPhoneNumber extends AppCompatActivity {
         });
     }
 
-    private void toSendSms() {
+    private void toSendSms(String phone) {
         if (ContextCompat.checkSelfPermission(VerifyPhoneNumber.this, android.Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED) {
         verifyCode = generateVerificationCode();
-            sendSMS("+84817420095", verifyCode);
+            sendSMS(phone, verifyCode);
         } else {
             ActivityCompat.requestPermissions(VerifyPhoneNumber.this,
                     new String[]{Manifest.permission.SEND_SMS}, 123);

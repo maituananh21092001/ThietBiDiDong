@@ -240,6 +240,52 @@ public class SqLiteHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+    public boolean isPhoneNumberUnique(String phoneNumber) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            // Query the User table for the given phoneNumber
+            String query = "SELECT * FROM User WHERE phoneNumber = ?";
+            cursor = db.rawQuery(query, new String[]{phoneNumber});
+
+            // Check if the cursor has any rows
+            if (cursor != null && cursor.getCount() > 0) {
+                // The phoneNumber is already in use (not unique)
+                return false;
+            } else {
+                // The phoneNumber is unique
+                return true;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+    }
+    public boolean isEmmailNumberUnique(String email) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            // Query the User table for the given phoneNumber
+            String query = "SELECT * FROM User WHERE email = ?";
+            cursor = db.rawQuery(query, new String[]{email});
+
+            // Check if the cursor has any rows
+            if (cursor != null && cursor.getCount() > 0) {
+                // The phoneNumber is already in use (not unique)
+                return false;
+            } else {
+                // The phoneNumber is unique
+                return true;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+    }
 
     public User getUser(String username) {
         SQLiteDatabase db = this.getReadableDatabase();

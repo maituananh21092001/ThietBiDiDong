@@ -40,9 +40,11 @@ public class PhoneVerifyInput extends AppCompatActivity {
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String phone = txtPhone.getText().toString().trim();
                 if(db.getUserByPhone(txtPhone.getText().toString().trim()) !=null){
+
                     Intent intent = new Intent(PhoneVerifyInput.this, VerifyPhoneNumber.class);
-                    intent.putExtra("phone",txtPhone.getText().toString().trim());
+                    intent.putExtra("phone",phone);
                     startActivity(intent);
                 }else{
                     Toast.makeText(PhoneVerifyInput.this, "Khong co tai khoan ton tai", Toast.LENGTH_SHORT).show();

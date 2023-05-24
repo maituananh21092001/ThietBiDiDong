@@ -80,13 +80,22 @@ public class FragmentProfile extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                disableEdit();
-                saveButton.setVisibility(View.GONE);
-                saveButton.setEnabled(false);
-                user.setEmail(eEmail.getText().toString());
-                user.setYourName(eYourName.getText().toString());
-                db.updateUser(user);
-                Toast.makeText(getContext(), "Thay doi thanh cong", Toast.LENGTH_SHORT).show();
+                String phoneNumberRegex = "^0[0-9]{9}$";
+                String phone1 = eYourPhone.getText().toString().trim();
+                String email1 = eEmail.getText().toString().trim();
+                String name1 = eYourName.getText().toString().trim();
+                if(!phone1.equals("")&&!email1.equals("")&&!name1.equals("")&&phone1.matches(phoneNumberRegex)) {
+                    disableEdit();
+                    saveButton.setVisibility(View.GONE);
+                    saveButton.setEnabled(false);
+                    user.setEmail(eEmail.getText().toString().trim());
+                    user.setYourName(eYourName.getText().toString().trim());
+                    user.setPhoneNumber(eYourPhone.getText().toString().trim());
+                    db.updateUser(user);
+                    Toast.makeText(getContext(), "Thay doi thanh cong", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), "Nhap lai", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btChangePassword.setOnClickListener(new View.OnClickListener() {

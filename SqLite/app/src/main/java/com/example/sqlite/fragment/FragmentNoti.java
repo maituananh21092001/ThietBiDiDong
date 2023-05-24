@@ -48,8 +48,7 @@ public class FragmentNoti extends Fragment implements RecycleViewAdapter.ItemLis
     private RecyclerView recyclerView,warningRecycleriew;
     private SqLiteHelper db;
     private TextView tvTong,tvTongThang,tvChiHienTai;
-    private static final String CHANNEL_ID = "your_channel_id";
-    private static final int NOTIFICATION_ID = 1;
+
 
     private int thu;
     private int chi;
@@ -94,7 +93,7 @@ public class FragmentNoti extends Fragment implements RecycleViewAdapter.ItemLis
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 22); // Đặt giờ là 0
-        calendar.set(Calendar.MINUTE, 47); // Đặt phút là 0
+        calendar.set(Calendar.MINUTE, 14); // Đặt phút là 0
         calendar.set(Calendar.SECOND, 0); // Đặt giây là 0
         Bundle bundle = new Bundle();
         bundle.putInt("itemCount", list.size());

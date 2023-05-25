@@ -25,6 +25,11 @@
         android:layout_height="wrap_content"
         android:text="Login" />
     <Button
+        android:id="@+id/btn_signup_gg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign up with gg" />
+    <Button
         android:id="@+id/btn_login_gg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

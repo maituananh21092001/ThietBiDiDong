@@ -25,11 +25,14 @@
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="match_parent"
+        android:background="@drawable/button_round_green"
         android:layout_height="wrap_content"
         android:text="Submit" />
 
     <Button
         android:id="@+id/buttonCancel"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_round_green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cancel" />

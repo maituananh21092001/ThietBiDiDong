@@ -29,6 +29,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.sqlite.dal.SqLiteHelper;
+import com.example.sqlite.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,7 +41,7 @@ import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword, etEmail;
-    private Button btnLogin,btnLoginGg;
+    private Button btnLogin,btnLoginGg,btnSignUp;
     private TextView tvRegister,tvForgot;
 
     GoogleSignInOptions gso;
@@ -57,10 +58,16 @@ public class LoginActivity extends AppCompatActivity {
         gsc = GoogleSignIn.getClient(this,gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
 
-        btnLoginGg.setOnClickListener(new View.OnClickListener() {
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn();
+                signUp();
+            }
+        });
+        btnLoginGg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginIngg();
             }
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -116,10 +123,17 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void signIn() {
+    private void loginIngg() {
+        Intent signInIntent = gsc.getSignInIntent();
+        startActivityForResult(signInIntent,2000);
+    }
+
+    private void signUp() {
         Intent signInIntent = gsc.getSignInIntent();
         startActivityForResult(signInIntent,1000);
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -127,11 +141,49 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
-                task.getResult(ApiException.class);
+
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if(!sqlHelper.isEmmailNumberUnique(account.getEmail())){
+                    Toast.makeText(getApplicationContext(), "Tai khoan email da ton tai", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("username", account.getDisplayName());
+                    editor.apply();
+                    sqlHelper.addUser(new User(account.getDisplayName(),account.getIdToken(),account.getEmail(),account.getGivenName(),""));
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
                 // Đăng nhập thành công, chuyển đến trang chính
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+
+
+
+            } catch (ApiException e) {
+                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if(requestCode == 2000){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if(sqlHelper.isEmmailNumberUnique(account.getEmail())){
+                    Toast.makeText(getApplicationContext(), "Tai khoan email chua dang ki ton tai", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("username", account.getDisplayName());
+                    editor.apply();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                // Đăng nhập thành công, chuyển đến trang chính
+
 
 
             } catch (ApiException e) {
@@ -150,6 +202,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
         btnLoginGg = findViewById(R.id.btn_login_gg);
+        btnSignUp = findViewById(R.id.btn_signup_gg);
         tvRegister = findViewById(R.id.tv_register);
         tvForgot = findViewById(R.id.tv_forgot);
         sqlHelper = new SqLiteHelper(this);

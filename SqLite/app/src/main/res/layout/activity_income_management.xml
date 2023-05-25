@@ -50,6 +50,7 @@
         <Button
             android:id="@+id/btAdd"
             android:layout_width="100dp"
+            android:background="@drawable/button_round_green"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="Add"
@@ -57,6 +58,7 @@
 
         <Button
             android:id="@+id/btUpdate"
+            android:background="@drawable/button_round_green"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -65,6 +67,7 @@
 
         <Button
             android:id="@+id/btDelete"
+            android:background="@drawable/button_round_green"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

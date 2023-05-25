@@ -15,7 +15,8 @@
 
     <Button
         android:id="@+id/income_management_button"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
+        android:background="@drawable/button_round_green"
         android:layout_height="wrap_content"
         android:text="Quản lý thu nhập"
         android:layout_below="@+id/welcome_message"
@@ -24,7 +25,8 @@
 
     <Button
         android:id="@+id/income_statistics_button"
-        android:layout_width="wrap_content"
+        android:background="@drawable/button_round_green"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Thống kê thu nhập"
         android:layout_below="@+id/income_management_button"
@@ -33,7 +35,8 @@
 
     <Button
         android:id="@+id/alert_button"
-        android:layout_width="wrap_content"
+        android:background="@drawable/button_round_green"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Cảnh báo"
         android:layout_below="@+id/income_statistics_button"

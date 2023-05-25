@@ -57,7 +57,7 @@
         android:weightSum="2">
         <Button
             android:id="@+id/btUpdate"
-            android:background="@drawable/border_button"
+            android:background="@drawable/button_round_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -65,7 +65,7 @@
             android:text="Add"/>
         <Button
             android:id="@+id/btCancel"
-            android:background="@drawable/border_button"
+            android:background="@drawable/button_round_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

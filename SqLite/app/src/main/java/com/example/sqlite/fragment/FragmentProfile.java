@@ -84,7 +84,7 @@ public class FragmentProfile extends Fragment {
                 String phone1 = eYourPhone.getText().toString().trim();
                 String email1 = eEmail.getText().toString().trim();
                 String name1 = eYourName.getText().toString().trim();
-                if(!phone1.equals("")&&!email1.equals("")&&!name1.equals("")&&phone1.matches(phoneNumberRegex)) {
+                if(!name1.equals("")) {
                     disableEdit();
                     saveButton.setVisibility(View.GONE);
                     saveButton.setEnabled(false);
@@ -154,12 +154,11 @@ public class FragmentProfile extends Fragment {
 
     }
     void editableEdit(){
-        eEmail.setEnabled(true);
-        eEmail.requestFocus();
+
         eYourName.setEnabled(true);
         eYourName.requestFocus();
-        eYourPhone.setEnabled(true);
-        eYourPhone.requestFocus();
+//        eYourPhone.setEnabled(true);
+//        eYourPhone.requestFocus();
     }
 
     void disableEdit(){

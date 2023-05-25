@@ -41,7 +41,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="50000000"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/teal_700" />
 
         <TextView
             android:id="@+id/tvType"
@@ -51,7 +51,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="Dau tu chung khoan"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/teal_700" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

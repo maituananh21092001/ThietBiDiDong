@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.example.sqlite.model.User;
 public class FragmentProfile extends Fragment {
     private SqLiteHelper db;
     private EditText eEmail,eYourName,eYourPhone;
+    private TextView txtUser;
     private Button logoutButton,editButton,saveButton,btChangePassword;
     @Nullable
     @Override
@@ -43,6 +45,7 @@ public class FragmentProfile extends Fragment {
         logoutButton = view.findViewById(R.id.logout_button);
         editButton = view.findViewById(R.id.edit_profile);
         saveButton = view.findViewById(R.id.save_profile);
+        txtUser = view.findViewById(R.id.username_text);
         btChangePassword = view.findViewById(R.id.change_password);
         saveButton.setEnabled(false);
         saveButton.setVisibility(View.GONE);
@@ -53,6 +56,7 @@ public class FragmentProfile extends Fragment {
         eEmail.setText(user.getEmail() == null ? "" : user.getEmail());
         eYourName.setText(user.getYourName() == null? "": user.getYourName());
         eYourPhone.setText(user.getYourName() == null? "": user.getPhoneNumber());
+        txtUser.setText(user.getUsername() == null? "":user.getUsername());
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +76,8 @@ public class FragmentProfile extends Fragment {
             @Override
             public void onClick(View view) {
                 editableEdit();
+                editButton.setEnabled(false);
+                editButton.setVisibility(View.GONE);
                 saveButton.setEnabled(true);
                 saveButton.setVisibility(View.VISIBLE);
 
@@ -88,6 +94,8 @@ public class FragmentProfile extends Fragment {
                     disableEdit();
                     saveButton.setVisibility(View.GONE);
                     saveButton.setEnabled(false);
+                    editButton.setEnabled(true);
+                    editButton.setVisibility(View.VISIBLE);
                     user.setEmail(eEmail.getText().toString().trim());
                     user.setYourName(eYourName.getText().toString().trim());
                     user.setPhoneNumber(eYourPhone.getText().toString().trim());

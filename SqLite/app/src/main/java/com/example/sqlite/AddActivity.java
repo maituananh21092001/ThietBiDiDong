@@ -89,6 +89,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 db = new SqLiteHelper(this);
                 db.addItem(i);
                 finish();
+                eTitle.setText("");
+                ePrice.setText("");
+                eDate.setText("");
 
 
             }

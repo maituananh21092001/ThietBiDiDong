@@ -5,13 +5,30 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/your_profile_image"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp" />
+    <TextView
+        android:id="@+id/username_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tên đăng nhập"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
 
 
     <EditText
         android:id="@+id/eEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
+        android:hint="Email"
         android:enabled="false"
         android:textSize="20sp" />
 
@@ -19,7 +36,7 @@
         android:id="@+id/eYour_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="your full name"
+        android:hint="Your full name"
         android:enabled="false"
         android:textSize="20sp" />
 
@@ -27,28 +44,40 @@
         android:id="@+id/eYour_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="your full name"
+        android:hint="Your phone number"
         android:enabled="false"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
+        android:background="@drawable/button_round_green"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Đăng xuất" />
+
     <Button
         android:id="@+id/edit_profile"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_round_green"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sửa profile" />
+
     <Button
         android:id="@+id/save_profile"
-        android:layout_width="wrap_content"
+        android:background="@drawable/button_round_green"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
-        android:text="Save change" />
+        android:text="Save changes"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/change_password"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_round_green"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Change password" />
 

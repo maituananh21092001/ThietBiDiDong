@@ -92,8 +92,8 @@ public class FragmentNoti extends Fragment implements RecycleViewAdapter.ItemLis
         List<Item> list = db.getByDate(date, user.getId());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 22); // Đặt giờ là 0
-        calendar.set(Calendar.MINUTE, 14); // Đặt phút là 0
+        calendar.set(Calendar.HOUR_OF_DAY, 10); // Đặt giờ là 0
+        calendar.set(Calendar.MINUTE, 0); // Đặt phút là 0
         calendar.set(Calendar.SECOND, 0); // Đặt giây là 0
         Bundle bundle = new Bundle();
         bundle.putInt("itemCount", list.size());

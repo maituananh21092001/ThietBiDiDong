@@ -1,64 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <SearchView
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:iconifiedByDefault="false"
-        app:queryHint="Nhap mon hang chi tieu"/>
+        android:iconifiedByDefault="false"
+        android:queryHint="Nhập món hàng chi tiêu" />
+
     <EditText
         android:id="@+id/eFrom"
-        android:textSize="12dp"
-        android:hint="Chon tu ngay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="Chọn từ ngày"
+        android:textSize="12sp" />
+
     <EditText
         android:id="@+id/eTo"
-        android:textSize="12dp"
-        android:hint="Den ngay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="Đến ngày"
+        android:textSize="12sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2">
+
         <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/spCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
+
         <Button
             android:id="@+id/btSearch"
-            android:background="@drawable/button_round_green"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Serach"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="Search"
+            android:background="@drawable/button_round_green" />
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/tvTong"
-        android:text="Tong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:text="Tổng"
         android:textColor="@color/teal_700"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
-
-
-
-
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

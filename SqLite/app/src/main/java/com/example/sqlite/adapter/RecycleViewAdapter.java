@@ -47,10 +47,10 @@ public class RecycleViewAdapter extends  RecyclerView.Adapter<RecycleViewAdapter
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         Item item = list.get(position);
-        holder.title.setText(item.getTitle());
-        holder.category.setText(item.getCategory());
-        holder.date.setText(item.getDate());
-        holder.price.setText(item.getPrice());
+        holder.title.setText("Chi tiêu vào: "+item.getTitle());
+        holder.category.setText("Loại chi tiêu: "+item.getCategory());
+        holder.date.setText("Ngày: "+item.getDate());
+        holder.price.setText("Chi phí: "+item.getPrice());
 
 
     }

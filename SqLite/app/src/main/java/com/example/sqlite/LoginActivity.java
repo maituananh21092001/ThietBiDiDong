@@ -35,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.Random;
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         initView();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this,gso);
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,20 +125,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginIngg() {
-        Intent signInIntent = gsc.getSignInIntent();
-        startActivityForResult(signInIntent,2000);
+        gsc.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent signInIntent = gsc.getSignInIntent();
+                startActivityForResult(signInIntent, 2000);
+            }
+        });
     }
 
     private void signUp() {
-        Intent signInIntent = gsc.getSignInIntent();
-        startActivityForResult(signInIntent,1000);
+        gsc.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent signInIntent = gsc.getSignInIntent();
+                startActivityForResult(signInIntent, 600);
+            }
+        });
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000){
+        if(requestCode == 600){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {

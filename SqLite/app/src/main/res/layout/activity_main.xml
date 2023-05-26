@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="60dp"
         android:layout_marginRight="20dp"
-        android:background="@color/yellow"
+        app:backgroundTint="@color/green"
         android:src="@drawable/ic_add"
         />
 

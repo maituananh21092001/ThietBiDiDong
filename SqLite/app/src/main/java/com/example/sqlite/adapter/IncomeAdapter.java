@@ -51,8 +51,8 @@ public class IncomeAdapter extends  RecyclerView.Adapter<IncomeAdapter.HomeViewH
     public void onBindViewHolder(@NonNull IncomeAdapter.HomeViewHolder holder, int position) {
         Income income = list.get(position);
         holder.tvMonth.setText("Luong thang "+income.getMonth());
-        holder.tvType.setText(income.getTypeIncome());
-        holder.tvSalary.setText(income.getSalary()+"VND");
+        holder.tvType.setText("Loai thu nhap "+ income.getTypeIncome());
+        holder.tvSalary.setText("Thu nhap "+ income.getSalary()+"VND");
 
 
     }

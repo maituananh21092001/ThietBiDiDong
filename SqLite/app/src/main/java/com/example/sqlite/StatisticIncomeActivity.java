@@ -31,6 +31,12 @@ public class StatisticIncomeActivity extends AppCompatActivity {
     private BarChart chartIncome;
     SqLiteHelper db;
     User user;
+    @Override
+    public void onBackPressed() {
+        // Thực hiện hành động back của bạn ở đây
+        // Ví dụ: quay về Activity trước đó, đóng Activity hiện tại, vv.
+        super.onBackPressed(); // Hãy chắc chắn gọi super.onBackPressed() để thực hiện hành động back mặc định
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -146,7 +146,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
                     }else{
                         date = d+"/0"+(m+1)+"/"+y;
                     }
-                    if(d<=9) date = "0"+"date";
+                    if(d<=9) date = "0"+date;
                     eFrom.setText(date);
                 }
             },year,month,day);
@@ -169,7 +169,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
                     if(d+1<=9){
                         date = "0"+date;
                     }
-                    if(d<=9) date = "0"+"date";
+                    if(d<=9) date = "0"+date;
                     eTo.setText(date);
                 }
             },year,month,day);
@@ -184,5 +184,13 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
                 tvTong.setText("Tong tien"+ tong(list)+"K");
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<Item> list = db.getAll(user.getId());
+        adapter.setList(list);
+        super.onResume();
     }
 }

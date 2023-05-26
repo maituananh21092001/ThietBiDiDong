@@ -70,8 +70,11 @@ public class IncomeManagement extends AppCompatActivity implements IncomeAdapter
                     income.setSalary(salary);
                     income.setUser(user);
                     db.addIncome(income);
+
                     incomeList = db.getAllIncome(user.getId());
                     incomeAdapter.setList(incomeList);
+                    etType.setText("");
+                    etSalary.setText("");
                 } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Nhap lai", Toast.LENGTH_SHORT).show();
 
